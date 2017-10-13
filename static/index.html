@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Boxberg Griezelt 2017, The Hollywood Edition</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/site.css">
+    <link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<link href="https://fonts.googleapis.com/css?family=Creepster" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Nosifer" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+
+<div id="app" class="container">
+
+    <div v-cloak>
+
+        <div class="title">
+            <h1 class="visible-lg visible-md">
+                Halloweentocht 2017
+            </h1>
+            <h2 class="visible-sm">
+                Halloweentocht 2017
+            </h2>
+            <h3 class="visible-xs">
+                Halloweentocht
+            </h3>
+        </div>
+
+        <div class="contents">
+            <div v-if="webflow.stage === 'initial'">
+
+                <div style="text-align: center">
+                    <h4 style="text-align: center">
+                        De ouderraad van de G.V. Basisschool in Boxbergheide<br/>
+                        organiseert dit jaar opnieuw haar<br/>
+                    </h4>
+                    <br/>
+                    <h2 style="text-align: center">
+                        Halloween Griezeltocht!
+                    </h2>
+                    <h4 style="text-align: center">
+                        Met als thema: Halloween in Hollywood
+                    </h4>
+                    <br/>
+                    <p>
+                        Kom gezellig mee griezelen, en trek zeker je griezeligste kostuum aan.<br/>
+                        De best verklede volwassene en kind maken kans op een mooie prijs!
+                    </p>
+                    <br/>
+                    <h4>Wanneer?</h4>
+                    <p>
+                        De tocht vindt dit jaar plaats op <strong>zondag 29 oktober 2017</strong>.<br/>
+                        Vertrekken kan tussen 17u30 en 20u30.
+                        <br/>
+                        <br/>
+                        De plaatsen per vertrekuur zijn beperkt dus wacht
+                        zeker niet te lang met inschrijven.
+                        <br/>
+                    </p>
+                    <br/>
+                    <h4>Waar?</h4>
+                    <p>
+                        Vertrek en aankomst aan de G.V. Basisschool in Boxbergheide.
+                    </p>
+                    <br/>
+                    <h4>Hoeveel kost het?</h4>
+                    <p>
+                        Kinderen tussen 3 en 12 jaar betalen &euro; 5.00<br/>
+                        Volwassenen (vanaf 12 jaar) betalen &euro; 7.00
+                    </p>
+                    <br/>
+                    <div>
+                        <button v-on:click.once="webflow.stage = 'form'"
+                                type="button" class="btn btn-large btn-primary">
+                            Klik hier om in te schrijven!
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div v-if="webflow.stage === 'form'">
+
+                <div v-if="!timeblocks || timeblocks.length == 0">
+            <span v-if="!loadTimeblocksFailed">
+                <i class="glyphicon glyphicon-refresh glyphicon-spin"></i>
+                Bezig met laden van gegevens...
+            </span>
+                    <span v-if="loadTimeblocksFailed">
+                <p>Er ging iets mis bij het laden van de gegevens.</p>
+                        <br/>
+                <button v-on:click="refreshTimeBlocks" class="btn btn-large btn-primary">Probeer nog eens</button>
+            </span>
+                </div>
+
+                <div v-if="timeblocks && timeblocks.length > 0">
+
+                    <div>
+                        <p>
+                            Schrijf je hier in voor de halloweentocht van de Ouderraad van de G.V. Basisschool in
+                            Boxbergheide.
+                        </p>
+                        <p>
+                            De tocht vindt dit jaar plaats op zondag 29 oktober 2017. Het thema is Halloween in
+                            Hollywood
+                            dus
+                            kies je griezeligste filmkostuum uit en kom mee griezelen!
+                        </p>
+
+
+                    </div>
+
+                    <div v-show="submitFailed" class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Sluiten"><span
+                                aria-hidden="true">&times;</span></button>
+                        <strong>Fout!</strong>
+                        <br/>
+                        Er ging iets mis bij het valideren van de gegevens.
+                        <br/>
+                        <span v-show="!errors || !errors.errors || errors.errors.length === 0">
+                            Probeer net nog eens opnieuw.
+                        </span>
+                        <span v-show="nobodyComing || specialWishes.childCountError || specialWishes.adultCountError  || (errors && errors.errors && errors.errors.length > 0)">
+                            Corrigeer volgende fouten alvorens verder te gaan:
+                            <ul>
+                                <li v-if="errors && errors.errors" v-for="error in errors.errors">{{ error.msg }}</li>
+                                <li v-if="specialWishes.adultCountError">{{ specialWishes.adultCountError }}</li>
+                                <li v-if="specialWishes.childCountError">{{ specialWishes.childCountError }}</li>
+                                <li v-if="nobodyComing">{{ nobodyComing }}</li>
+                            </ul>
+                        </span>
+                    </div>
+
+                    <form>
+
+                        <div class="form-group" :class="{ 'has-error': errors.has('firstName') }">
+                            <label for="inputFirstName" class="control-label">Voornaam</label>
+                            <input id="inputFirstName"
+                                   v-model="reservation.firstname"
+                                   placeholder="Voornaam"
+                                   name="firstName"
+                                   data-vv-as="voornaam"
+                                   v-validate="'required|min:2|max:255'"
+                                   :class="{'form-control': true, 'is-danger': errors.has('firstName') }"
+                                   type="text" required="required">
+                            <span v-show="errors.has('firstName')"
+                                  class="help-block">{{ errors.first('firstName') }}</span>
+                        </div>
+
+                        <div class="form-group" :class="{ 'has-error': errors.has('lastName') }">
+                            <label for="inputLastName" class="control-label">Familienaam</label>
+                            <input id="inputLastName"
+                                   v-model="reservation.lastname"
+                                   placeholder="Familienaam"
+                                   name="lastName"
+                                   data-vv-as="familienaam"
+                                   v-validate="'required|min:2|max:255'"
+                                   :class="{'form-control': true, 'is-danger': errors.has('lastName') }"
+                                   type="text" required="required">
+                            <span v-show="errors.has('lastName')"
+                                  class="help-block">{{ errors.first('lastName') }}</span>
+                        </div>
+
+                        <div class="form-group" :class="{ 'has-error': errors.has('email') }">
+                            <label for="inputEmail" class="control-label">Email adres</label>
+                            <input id="inputEmail" v-model="reservation.emailAddress"
+                                   placeholder="Email adres"
+                                   name="email"
+                                   data-vv-as="email"
+                                   v-validate="'required|email'"
+                                   :class="{'form-control': true, 'is-danger': errors.has('email') }"
+                                   type="email" required="required">
+                            <span v-show="errors.has('email')" class="help-block">{{ errors.first('email') }}</span>
+                        </div>
+
+                        <div class="form-group" :class="{ 'has-error': errors.has('phoneNumber') }">
+                            <label for="inputPhone" class="control-label">Telefoonnummer</label>
+                            <input id="inputPhone"
+                                   v-model="reservation.phoneNumber"
+                                   placeholder="Telefoonnummer"
+                                   name="phoneNumber"
+                                   data-vv-as="telefoonnummer"
+                                   v-validate=""
+                                   :class="{'form-control': true, 'is-danger': errors.has('phoneNumber') }"
+                                   type="tel" required="required">
+                            <span v-show="errors.has('phoneNumber')"
+                                  class="help-block">{{ errors.first('phoneNumber') }}</span>
+                        </div>
+
+                        <div class="form-group" :class="{ 'has-error': errors.has('nrOfAdults') || nobodyComing }">
+                            <label for="inputAdults" class="control-label">Aantal volwassenen</label>
+                            <input id="inputAdults"
+                                   v-model.number="reservation.nrOfAdults"
+                                   v-on:change="validateSpecialWishesCounts"
+                                   placeholder="Aantal volwassenen"
+                                   name="nrOfAdults"
+                                   data-vv-as="aantal volwassenen"
+                                   v-validate="'required|min_value:0|max_value:25'"
+                                   :class="{'form-control': true, 'is-danger': errors.has('nrOfAdults') || nobodyComing }"
+                                   type="number" required="required">
+                            <span v-show="errors.has('nrOfAdults')"
+                                  class="help-block">{{ errors.first('nrOfAdults')  }}</span>
+                            <span v-show="nobodyComing"
+                                  class="help-block">{{ nobodyComing }}</span>
+                        </div>
+
+                        <div class="form-group" :class="{ 'has-error': errors.has('nrOfChildren') || nobodyComing }">
+                            <label for="inputChildren" class="control-label">Aantal kinderen</label>
+                            <input id="inputChildren"
+                                   v-model.number="reservation.nrOfChildren"
+                                   v-on:change="validateSpecialWishesCounts"
+                                   placeholder="Aantal kinderen"
+                                   name="nrOfChildren"
+                                   data-vv-as="aantal kinderen"
+                                   v-validate="'required|min_value:0|max_value:25'"
+                                   :class="{'form-control': true, 'is-danger': errors.has('nrOfChildren') || nobodyComing}"
+                                   type="number" required="required">
+                            <span v-show="errors.has('nrOfChildren')"
+                                  class="help-block">{{ errors.first('nrOfChildren') }}</span>
+                            <span v-show="nobodyComing"
+                                  class="help-block">{{ nobodyComing }}</span>
+                            <span class="help-block has-success">Kinderen jonger dan 3 jaar moet je niet inschrijven. Vanaf 12 jaar moet je inschrijven als volwassene.</span>
+                        </div>
+
+
+                        <div class="form-group" :class="{ 'has-error': errors.has('startTime') }">
+                            <label for="inputTimeblock" class="control-label">Gewenste vertrektijd</label>
+                            <select id="inputTimeblock"
+                                    v-model="reservation.timeBlock"
+                                    class="form-control"
+                                    name="startTime"
+                                    data-vv-as="tijdstip van verterk"
+                                    v-bind:rules="reservation"
+                                    v-validate="{ required: true, timeBlock: [reservation,timeblocksByKey] }"
+                                    :class="{'form-control': true, 'is-danger': errors.has('startTime') }">
+                                <option disabled value="<selecteer een tijdstip>"></option>
+                                <option v-for="timeblock in timeblocks" :key="timeblock.key" :value="timeblock.key"
+                                        :disabled="timeblock.freePlaces == 0 || (reservation.nrOfAdults + reservation.nrOfChildren) > timeblock.freePlaces">
+                                    {{ generateStartTimeOption(reservation, timeblock) }}
+                                </option>
+                            </select>
+                            <span v-show="errors.has('startTime')"
+                                  class="help-block">{{ errors.first('startTime') }}</span>
+                        </div>
+
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="" v-model="specialWishes.halal">
+                                Halal
+                            </label>
+                        </div>
+                        <div v-show="specialWishes.halal" class="well">
+                            <div class="row">
+                                <div class="col-xs-1">&nbsp;</div>
+                                <div class="col-xs-11">
+                                    Hoeveel van de personen die je hierboven invoerde eten halal?
+                                    <span v-show="specialWishes.adultCountError" class="help-block has-error">
+                                        {{ specialWishes.adultCountError }}
+                                    </span>
+                                    <span v-show="specialWishes.childCountError" class="help-block has-error">
+                                        {{ specialWishes.childCountError }}
+                                    </span>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-xs-1">&nbsp;</div>
+                                <div class="col-xs-5">
+                                    <label for="inputNrOfAdultsHalal">Volwassenen</label>
+                                    <input id="inputNrOfAdultsHalal" v-model.number="reservation.nrOfAdultsHalal"
+                                           class="form-control"
+                                           v-on:change="validateSpecialWishesCounts"
+                                           name="specialWishesAdultCount"
+                                           type="number" min="0" required="required">
+                                </div>
+                                <div class="col-xs-5">
+                                    <label for="inputNrOfChildrenHalal">Kinderen</label>
+                                    <input id="inputNrOfChildrenHalal" v-model.number="reservation.nrOfChildrenHalal"
+                                           class="form-control"
+                                           v-on:change="validateSpecialWishesCounts"
+                                           name="specialWishesChildCount"
+                                           type="number" min="0" required="required">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="" v-model="specialWishes.veggie">
+                                Vegetarisch
+                            </label>
+                        </div>
+                        <div v-show="specialWishes.veggie" class="well">
+                            <div class="row">
+                                <div class="col-xs-1">&nbsp;</div>
+                                <div class="col-xs-11">
+                                    Hoeveel van de personen die je hierboven invoerde eten vegetarisch?
+                                    <span v-show="specialWishes.adultCountError" class="help-block has-error">
+                                        {{ specialWishes.adultCountError }}
+                                    </span>
+                                    <span v-show="specialWishes.childCountError" class="help-block has-error">
+                                        {{ specialWishes.childCountError }}
+                                    </span>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-xs-1">&nbsp;</div>
+                                <div class="col-xs-5">
+                                    <label for="inputNrOfAdultsVeggie">Volwassenen</label>
+                                    <input id="inputNrOfAdultsVeggie" v-model.number="reservation.nrOfAdultsVeggie"
+                                           class="form-control"
+                                           v-on:change="validateSpecialWishesCounts"
+                                           name="specialWishesAdultCount"
+                                           type="number" min="0" required="required">
+                                </div>
+                                <div class="col-xs-5">
+                                    <label for="inputNrOfChildrenVeggie">Kinderen</label>
+                                    <input id="inputNrOfChildrenVeggie" v-model.number="reservation.nrOfChildrenVeggie"
+                                           name="specialWishesChildCount"
+                                           v-on:change="validateSpecialWishesCounts"
+                                           class="form-control"
+                                           type="number" min="0" required="required">
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <div class="text-center">
+                        <button v-on:click="webflow.stage = 'initial'"
+                                type="button" class="btn btn-link">
+                            Terug
+                        </button>
+                        &nbsp;
+                        <button v-on:click="validateFormAndGoToConfirmation"
+                                type="button" class="btn btn-primary">
+                            Verder naar samenvatting
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div v-if="webflow.stage === 'confirm'">
+
+                <div v-if="(reservation.nrOfChildren > 0 || reservation.nrOfAdults > 0)">
+                    <h3>Samenvatting</h3>
+                    <br/>
+                    <div>
+                        Je reservatie is bijna in orde.</br></br>
+                        Controleer de volgende gegevens en bevestig je reservatie als ze correct zijn.
+                        Als je nog wijzigingen wil doen, klik dan op 'Corrigeer gegevens'.
+                    </div>
+                    <br/>
+                    <div>
+                        <div>
+                            <strong>{{ reservation.firstname }} {{ reservation.lastname }}</strong> ({{
+                            reservation.emailAddress }})
+                            <br/>
+                            Vertrek <strong>zondag 29 oktober om {{ timeblocksByKey[reservation.timeBlock].displayValue
+                            }}</strong>
+                        </div>
+                        <br/>
+                        <table>
+                            <tr v-if="reservation.nrOfAdults > 0">
+                                <td>{{reservation.nrOfAdults}} {{reservation.nrOfAdults === 1 ? 'volwassene' :
+                                    'volwassenen'}}
+                                </td>
+                                <td>x</td>
+                                <td>&euro; {{price.adult}}.00</td>
+                                <td>=</td>
+                                <td>&euro; {{reservation.nrOfAdults * price.adult}}.00</td>
+                                <td class="hidden-xs hidden-sm" style="width: 10px"></td>
+                                <td class="hidden-xs hidden-sm" style="font-style: italic">
+                                    <span v-if="reservation.nrOfAdultsHalal && reservation.nrOfAdultsHalal > 0">
+                                        {{reservation.nrOfAdultsHalal}} halal
+                                    </span>
+                                    <span v-if="reservation.nrOfAdultsVeggie && reservation.nrOfAdultsVeggie > 0">
+                                        {{reservation.nrOfAdultsVeggie}} vegetarisch
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr v-if="reservation.nrOfChildren > 0">
+                                <td>{{reservation.nrOfChildren}} {{reservation.nrOfChildren === 1 ? 'kind' :
+                                    'kinderen'}}
+                                </td>
+                                <td>x</td>
+                                <td>&euro; {{price.child}}.00</td>
+                                <td>=</td>
+                                <td>&euro; {{reservation.nrOfChildren * price.child}}.00</td>
+                                <td class="hidden-xs hidden-sm" style="width: 10px"></td>
+                                <td class="hidden-xs hidden-sm" style="font-style: italic">
+                                    <span v-if="reservation.nrOfChildrenHalal && reservation.nrOfChildrenHalal > 0">
+                                        {{reservation.nrOfChildrenHalal}} halal
+                                    </span>
+                                    <span v-if="reservation.nrOfChildrenVeggie && reservation.nrOfChildrenVeggie > 0">
+                                        {{reservation.nrOfChildrenVeggie}} vegetarisch
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr v-if="reservation.nrOfChildren > 0 && reservation.nrOfAdults > 0"
+                                style="font-weight: bolder">
+                                <td colspan="4" style="text-align: right">Totaal:</td>
+                                <td>&euro; {{(reservation.nrOfChildren * price.child) + (reservation.nrOfAdults *
+                                    price.adult)}}.00
+                                </td>
+                                <td colspan="2" class="hidden-xs hidden-sm">&nbsp;</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <br/>
+
+                <div v-show="timeBlockFullError && !submitting" class="alert alert-danger" role="alert">
+                    Het door jou gekozen tijdstip van vertrek is inmiddels helaas niet meer beschikbaar.
+                    <a href="#" v-on:click="webflow.stage = 'form'">Klik hier om een ander tijdstip te kiezen.</a>
+                </div>
+
+                <div class="text-center">
+                    <button v-on:click="webflow.stage = 'form'" v-show="!submitting"
+                       type="button" class="btn btn-link">
+                        Corrigeer gegevens
+                    </button>
+                    &nbsp;
+                    <button v-on:click="submitReservation"
+                            type="button" class="btn btn-primary"
+                            aria-label="Bevestig je reservatie"
+                            :disabled="submitting">
+                    <span class="glyphicon"
+                          :class="{ 'glyphicon-spin': submitting,  'glyphicon-ok': !submitting, 'glyphicon-refresh': submitting } "
+                          aria-hidden="true"></span>
+                        {{ submitting ? 'Je reservatie wordt verwerkt...' : 'Bevestig je reservatie' }}
+                    </button>
+                </div>
+
+
+            </div>
+
+            <div v-if="webflow.stage === 'done'">
+
+                <div>
+                    <h3>Hartelijk dank!</h3>
+                    <br/>
+                    <p>
+                        Je plaatsen met vertrek op <strong>zondag 29 oktober om {{ bill.startTime}}</strong> zijn
+                        <strong>voorlopig</strong> gereserveerd op naam van {{ reservation.firstname }} {{
+                        reservation.lastname }}.
+                    </p>
+                    <br/>
+                    <p>
+                        <strong>Let op!</strong>
+                        Deze plaatsen worden pas definitief aan jou toegekend na betaling van<br/>
+                        de som van <strong>&euro;{{bill.totalAmountDue}}.00</strong><br/>
+                        op rekening <strong>BE46&nbsp;0014&nbsp;1821&nbsp;1536</strong> van de ouderraad<br/>
+                        met vermelding van <strong>{{bill.reference}}</strong><br/>
+                        binnen 3 werkdagen.
+
+                    </p>
+                    <br/>
+                    <p><strong>Details van je reservatie:</strong></p>
+                    <table>
+                        <tr v-for="line in bill.lines">
+                            <td>{{ line.nrOfPeople }}</td>
+                            <td>{{ line.description }}</td>
+                            <td>x</td>
+                            <td>&euro; {{ line.pricePerPerson }}.00</td>
+                            <td>=</td>
+                            <td>&euro; {{ line.totalPrice }}.00</td>
+                            <td class="hidden-xs hidden-sm" style="width: 10px"></td>
+                            <td class="hidden-xs hidden-sm" style="font-style: italic">
+                                {{line.extraInfo}}
+                            </td>
+                        </tr>
+                        <tr style="font-weight: bolder">
+                            <td style="text-align: right" colspan="5">Totaal:</td>
+                            <td>&euro; {{bill.totalAmountDue}}.00</td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <p v-if="bill.mailSent">
+                        Er werd een bevestigingsmail met al deze info verstuurd naar {{ reservation.emailAddress }}. Als
+                        je deze mail binnen enkele minuten niet ontvangen hebt, check dan je spam folder.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</div>
+
+<script src="js/promise.min.js"></script>
+<script language="JavaScript">
+    if (!window.Promise) {
+        window.Promise = Promise;
+    }
+</script>
+<script src="js/vue.js"></script>
+<script src="js/vee-validate.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

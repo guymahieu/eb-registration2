@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Boxberg Griezelt 2017, The Hollywood Edition</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<style>
+    [v-cloak] {
+        display: none;
+    }
+</style>
+
+
+<div id="app" class="container-fluid" v-cloak>
+
+    <br/>
+    <br/>
+    <br/>
+
+    <div id="login" v-if="!login.ok">
+
+        <div v-show="login.error" class="alert alert-danger" role="alert">
+            Fout bij inloggen!
+        </div>
+
+
+        <form>
+            <div class="form-group">
+                <input v-model="login.user" placeholder="Gerbuikersnaam" type="text">
+            </div>
+
+            <div class="form-group">
+                <input v-model="login.password" placeholder="Wachtwoord" type="password">
+            </div>
+
+            <button v-on:click="refreshReservations" type="button" class="btn btn-primary">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                Inloggen
+            </button>
+
+        </form>
+    </div>
+
+    <div v-if="login.ok">
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Reservaties</div>
+            <div class="panel-body">
+                <p>
+                    <button v-on:click="refreshReservations" type="button" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                        Gegevens opnieuw laden
+                    </button>
+                </p>
+            </div>
+
+
+            <table class="table table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>
+                        Naam
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Telefoon
+                    </th>
+                    <th>
+                        # Volw
+                    </th>
+                    <th>
+                        # Kind
+                    </th>
+                    <th style="text-align: right">
+                        Bedrag
+                    </th>
+                    <th style="text-align: center">
+                        Betaald
+                    </th>
+                    <th>
+                        Referentie
+                    </th>
+                    <th>
+                        Reservatiedatum
+                    </th>
+                    <th>
+                        Dagen geleden
+                    </th>
+                    <th>
+                        &nbsp;
+                    </th>
+                </tr>
+                <tbody>
+                <tr v-for="reservation in reservations" :class="{ 'info': reservation.paid, 'danger': (!reservation.paid && reservation.ageInDays > 3) }">
+                    <td>{{ reservation.firstname }} {{ reservation.lastname }}</td>
+                    <td>{{ reservation.emailAddress }}</td>
+                    <td>{{ reservation.phoneNumber }}</td>
+                    <td>{{ reservation.nrOfAdults }}</td>
+                    <td>{{ reservation.nrOfChildren }}</td>
+                    <td style="text-align: right">&euro;&nbsp;{{ reservation.totalAmount }}.00</td>
+                    <td style="text-align: center"><span class="glyphicon"
+                                                         :class="{ 'glyphicon-ok': reservation.paid, 'glyphicon-remove': !reservation.paid }"></span>
+                    </td>
+                    <td>{{ reservation.reference }}</td>
+                    <td>{{ reservation.createdAt.getDate() }}/{{ reservation.createdAt.getMonth() + 1 }}/{{ reservation.createdAt.getFullYear() }}</td>
+                    <td>{{ reservation.ageInDays }}</td>
+                    <td>
+                        <button v-if="!reservation.paid" v-on:click="registerPayment(reservation, true)" type="button" class="btn btn-sm btn-default">
+                            <span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
+                            Markeer als
+                            betaald
+                        </button>
+                        <button v-if="reservation.paid" v-on:click="registerPayment(reservation, false)" type="button" class="btn btn-sm btn-danger">
+                            <span class="glyphicon glyphicon-error" aria-hidden="true"></span>
+                            Markeer als
+                            onbetaald
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script src="js/promise.min.js"></script>
+<script language="JavaScript">
+    if (!window.Promise) {
+        window.Promise = Promise;
+    }
+</script>
+<script src="js/vue.js"></script>
+<script src="js/vee-validate.js"></script>
+<script src="js/bo.js"></script>
+</body>
+</html>

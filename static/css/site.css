@@ -1,0 +1,69 @@
+[v-cloak] {
+    display: none;
+}
+
+body{
+    /*margin: 0;*/
+    background: black url('../img/background6.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.title {
+    font-family: 'Nosifer', cursive;
+    border-radius: 10px;
+    background: black url("../img/logo2.jpg") no-repeat right center;
+    background-size: contain;
+    background-origin: content-box;
+    margin-top: 20px;
+    padding: 10px 20px;
+    color: orange;
+}
+
+.title > h3 {
+    font-family: 'Creepster', cursive;
+}
+
+.btn {
+    margin-top: 10px;
+}
+
+.contents {
+    border-radius: 10px;
+    background-color: white;
+    opacity: 0.90;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+th, td {
+    padding: 5px;
+    text-align: left;
+}
+
+.fa-spin-custom, .glyphicon-spin {
+    -webkit-animation: spin 1000ms infinite linear;
+    animation: spin 1000ms infinite linear;
+}
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
