@@ -34,9 +34,6 @@ public class BackOfficeServlet extends HttpServlet {
     private static final String BACKOFFICE_USER = System.getenv("BACKOFFICE_USER");
     private static final String BACKOFFICE_PASSWORD = System.getenv("BACKOFFICE_PASSWORD");
 
-    private static final String DASHBOARD_USER = System.getenv("DASHBOARD_USER");
-    private static final String DASHBOARD_PASSWORD = System.getenv("DASHBOARD_PASSWORD");
-
     private final SessionFactory sessionFactory;
 
     public BackOfficeServlet() {
@@ -121,7 +118,7 @@ public class BackOfficeServlet extends HttpServlet {
 //        }
     }
 
-    protected boolean isLoginSuccessful(HttpServletRequest req, HttpServletResponse resp, String backofficeUser, String backofficePassword) {
+    public static boolean isLoginSuccessful(HttpServletRequest req, HttpServletResponse resp, String backofficeUser, String backofficePassword) {
         Boolean authenticated = login(req, backofficeUser, backofficePassword);
         if (authenticated == null) {
             //WWW-Authenticate: Basic realm="Access to the staging site"
@@ -136,7 +133,7 @@ public class BackOfficeServlet extends HttpServlet {
         return true;
     }
 
-    public Boolean login(HttpServletRequest req, String expectedUser, String expectedPassword) {
+    public static Boolean login(HttpServletRequest req, String expectedUser, String expectedPassword) {
         if (isBlank(BACKOFFICE_USER) || isBlank(BACKOFFICE_PASSWORD)) {
             return false;
         }

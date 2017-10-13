@@ -12,6 +12,7 @@ import com.amazonaws.xray.plugins.ElasticBeanstalkPlugin;
 import org.clarent.griezel.model.Reservation;
 import org.clarent.griezel.servlet.BackOfficeServlet;
 import org.clarent.griezel.servlet.ReservationServlet;
+import org.clarent.griezel.servlet.StatusServlet;
 import org.clarent.griezel.servlet.TimeBlockFillingServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -86,6 +87,7 @@ public class Application {
         handler.addServletWithMapping(ReservationServlet.class, "/api/reservation");
         handler.addServletWithMapping(TimeBlockFillingServlet.class, "/api/timeblocks");
         handler.addServletWithMapping(BackOfficeServlet.class, "/api/backoffice");
+        handler.addServletWithMapping(StatusServlet.class, "/werkgroep");
         handler.addServletWithMapping(HomeServlet.class, "/*");
 
 //        handler.addServletWithMapping(CronServlet.class, "/crontask");
