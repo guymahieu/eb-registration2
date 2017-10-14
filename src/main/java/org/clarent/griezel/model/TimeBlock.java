@@ -13,7 +13,7 @@ public enum TimeBlock {
     START_AT_18_10("18:10"),
     START_AT_18_20("18:20"),
     START_AT_18_30("18:30"),
-    START_AT_18_40("18:40", 29),
+    START_AT_18_40("18:40"),
     START_AT_18_50("18:50"),
     START_AT_19_00("19:00"),
     START_AT_19_10("19:10"),
@@ -22,12 +22,12 @@ public enum TimeBlock {
     START_AT_19_40("19:40"),
     START_AT_19_50("19:50"),
     START_AT_20_00("20:00"),
-    START_AT_20_10("20:10", 26),
+    START_AT_20_10("20:10"),
     START_AT_20_20("20:20"),
     START_AT_20_30("20:30")
     ;
 
-    private static final int MAX_PEOPLE = 25;
+    private static final int MAX_PEOPLE = 30;
 
     private final String display;
     private final int maxPeople;

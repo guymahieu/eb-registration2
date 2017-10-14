@@ -207,7 +207,7 @@
                                    placeholder="Aantal volwassenen"
                                    name="nrOfAdults"
                                    data-vv-as="aantal volwassenen"
-                                   v-validate="'required|min_value:0|max_value:25'"
+                                   v-validate="'required|min_value:0|max_value:30'"
                                    :class="{'form-control': true, 'is-danger': errors.has('nrOfAdults') || nobodyComing }"
                                    type="number" required="required">
                             <span v-show="errors.has('nrOfAdults')"
@@ -224,7 +224,7 @@
                                    placeholder="Aantal kinderen"
                                    name="nrOfChildren"
                                    data-vv-as="aantal kinderen"
-                                   v-validate="'required|min_value:0|max_value:25'"
+                                   v-validate="'required|min_value:0|max_value:30'"
                                    :class="{'form-control': true, 'is-danger': errors.has('nrOfChildren') || nobodyComing}"
                                    type="number" required="required">
                             <span v-show="errors.has('nrOfChildren')"
