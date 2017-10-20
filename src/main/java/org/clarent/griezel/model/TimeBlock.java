@@ -7,7 +7,7 @@ package org.clarent.griezel.model;
 public enum TimeBlock {
 
     START_AT_17_30("17:30"),
-    START_AT_17_40("17:40"),
+    START_AT_17_40("17:40", 32),
     START_AT_17_50("17:50"),
     START_AT_18_00("18:00"),
     START_AT_18_10("18:10"),
