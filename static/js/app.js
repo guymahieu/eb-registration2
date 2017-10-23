@@ -84,7 +84,7 @@ var locale = {
 
 VeeValidate.Validator.addLocale(locale);
 
-new Vue({
+var app = new Vue({
     el: '#app',
     data: {
         timeblocksByKey: {},
